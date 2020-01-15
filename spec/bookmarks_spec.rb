@@ -12,4 +12,12 @@ describe Bookmark do
     #   Bookmark.all
     # end
   end
+
+  describe '.add' do
+    it 'adds new bookmark' do
+      p Bookmark.add('www.yahoo.com')
+      expect(Bookmark.all).to include 'www.yahoo.com'
+    end
+  end
+  
 end
