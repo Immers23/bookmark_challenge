@@ -2,12 +2,20 @@ require 'pg'
 
 class Bookmark
 
+  attr_reader :id, :url, :title
+
+  def initialize(id:, url:, title:)
+    @id = id
+    @title = title
+    @url = url
+  end
+
   def self.all
     con = self.connect
     begin
       rs = con.exec "SELECT * FROM bookmarks"
       list = []
-      rs.each {|row| list << row['url']}
+      rs.each {|row| list << Bookmark.new(url: row['url'], title: row['title'], id: row['id'])}
     rescue => e
       puts e.message
     ensure
@@ -17,10 +25,10 @@ class Bookmark
     list
   end
 
-  def self.add(url)
+  def self.add(url:, title:)
     con = self.connect
     begin
-      con.exec("INSERT INTO bookmarks (url) VALUES('#{url}')")
+      con.exec("INSERT INTO bookmarks (title, url) VALUES('#{title}', '#{url}') RETURNING id, url, title")
     rescue => e
       puts e.message
     ensure

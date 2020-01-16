@@ -22,7 +22,7 @@ class BookmarkManager < Sinatra::Base
 
   post '/bookmarks' do
     p params
-    Bookmark.add(url: params['url'])
+    Bookmark.add(url: params['url'], title: params[:title])
     redirect '/bookmarks'
     # url = params['url']
     # connection = PG.connect(dbname: 'bookmark_manager_test')
